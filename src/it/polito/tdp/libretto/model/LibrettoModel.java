@@ -2,6 +2,8 @@ package it.polito.tdp.libretto.model;
 
 import java.util.*;
 
+import it.polito.tdp.libretto.db.EsameDAO;
+
 public class LibrettoModel {
 	private List<Esame> esami;
 	
@@ -16,13 +18,9 @@ public class LibrettoModel {
 	 * return false se esistema già e quindi non è possibile aggiungerlo
 	 */
 	public boolean addEsame(Esame e){
-		//contains usa equals quindi deve essere implementato
-		if(!esami.contains(e)){
-			esami.add(e);
-			return true;
-		}
-		else
-			return false;
+		EsameDAO dao=new EsameDAO();
+		
+		return dao.create(e);
 	}
 	
 	//O scandisco una riga x volta con ciclo for
@@ -33,13 +31,9 @@ public class LibrettoModel {
 	 * @return esame trovato o null
 	 */
 	public Esame trovaEsame(String codice){
-		int pos=this.esami.indexOf(new Esame(codice, null, null));//creo un oggetto dello stesso tipo di quello che sto cercando e ne prendo l'indice per poter usare il get
-		
-		if(pos ==-1)
-			return null;
-		else{
-			return esami.get(pos);
-		}
+		EsameDAO dao=new EsameDAO();
+		Esame e=dao.find(codice);
+		return e;
 		
 	}
 	
